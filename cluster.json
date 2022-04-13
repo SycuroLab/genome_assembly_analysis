@@ -1,0 +1,36 @@
+{
+  "__default__" :
+  {
+    "name": "metagenotate.{rule}.{wildcards}",
+    "partition": "synergy,cpu2019,cpu2021",
+    "nodes": 1,
+    "ntasks": 1,
+    "cpus-per-task": 14,
+    "time" : "2-00:00:00",
+    "mem" : 60G,
+    "output" : "logs/{rule}.{wildcards}.out",
+    "error" : "logs/{rule}.{wildcards}.err"
+  },
+  "checkm" :
+  {
+    "partition": "bigmem,synergy",
+    "cpus-per-task" : 14,
+    "time" : "05:00:00",
+    "mem" : 220G,
+    "output" : "logs/{rule}.{wildcards}.out",
+    "error" : "logs/{rule}.{wildcards}.err"
+
+  },
+  "gtdbtk" :
+  {
+    "partition": "bigmem,synergy",
+    "cpus-per-task" : 14,
+    "time" : "05:00:00",
+    "mem" : 220G,
+    "output" : "logs/{rule}.{wildcards}.out",
+    "error" : "logs/{rule}.{wildcards}.err"
+
+  }
+
+
+}

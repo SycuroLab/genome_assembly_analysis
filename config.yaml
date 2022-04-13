@@ -1,0 +1,45 @@
+# ***************************************
+# * Parameters for metagenotate pipeline *
+# ***************************************
+
+list_files: "/home/kevin.muirhead/genome_assembly_analysis/utils/ref_list.txt"
+
+# Path to genome or MAG assembly.
+input_dir: "/bulk/IMCshared_bulk/shared/ref_genomes/other_prok_ref_genomes/Bloom_vaginal_MAGs/MAGs/all_MAGs/"
+
+output_dir: "/work/sycuro_lab/kevin/Bloom_MAGs_analysis_2022-04-09"
+
+## quast parameters.
+
+# Number of threads for quast rule.
+quast_threads: 14
+
+##  prokka parameters.
+
+# Number of threads for prokka rule.
+prokka_threads: 14
+
+## metaerg parameters.
+
+# metaerg database path.
+metaerg_database_path: "/bulk/IMCshared_bulk/shared/dbs/metaerg_db/db"
+
+# singularity working directories.
+working_dirs: ["/work","/bulk"]
+
+metaerg_threads: 14
+
+## CheckM parameters.
+
+checkm_database_path: "/bulk/IMCshared_bulk/shared/dbs/checkm_db"
+
+# Number of threads for checkm rule.
+checkm_threads: 14
+
+## GTDB-tk parameters.
+
+gtdbtk_database_path: "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-1.5.0/db"
+
+# Number of threads for gtdbtk rule.
+gtdbtk_threads: 14
+
