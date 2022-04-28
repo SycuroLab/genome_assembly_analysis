@@ -96,7 +96,7 @@ rule checkm:
        "checkm data setRoot {params.checkm_database}; "
        "mkdir -p {params.checkm_dir}; "
        "filename=$(basename {input.assembly_file}); "
-       "ln -s {input.assembly_file} {params.checkm_dir}/$filename; "
+       "cp {input.assembly_file} {params.checkm_dir}/$filename; "
        "checkm lineage_wf -t {params.threads} -x fa --tab_table --file {output.checkm_table_file} {params.checkm_dir} {params.checkm_dir}; "
 
 rule gtdbtk:
@@ -112,6 +112,6 @@ rule gtdbtk:
     shell:
        "GTDBTK_DATA_PATH=\"{params.gtdbtk_data_path}\"; "       
        "filename=$(basename {input.assembly_file}); "
-       "ln -s {input.assembly_file} {params.gtdbtk_dir}/$filename; "
+       "cp {input.assembly_file} {params.gtdbtk_dir}/$filename; "
        "gtdbtk classify_wf --genome_dir {params.gtdbtk_dir} --extension \"fa\" --cpus {params.threads} --out_dir {params.gtdbtk_dir}; "
 
