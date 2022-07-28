@@ -2,12 +2,12 @@
 # * Parameters for metagenotate pipeline *
 # ***************************************
 
-list_files: "/home/kevin.muirhead/genome_assembly_analysis/utils/ref_list.txt"
+list_files: "/bulk/sycuro_bulk/lsycuro_labshare/kevin/proteomics_pangenomes/chlamydia_trachomatis/software/genome_assembly_analysis/chlamydia_trachomatis_genome_list.txt"
 
 # Path to genome or MAG assembly.
-input_dir: "/bulk/IMCshared_bulk/shared/ref_genomes/other_prok_ref_genomes/Bloom_vaginal_MAGs/MAGs/all_MAGs/"
+input_dir: "/bulk/sycuro_bulk/lsycuro_labshare/kevin/proteomics_pangenomes/chlamydia_trachomatis/genome_assemblies"
 
-output_dir: "/work/sycuro_lab/kevin/Bloom_MAGs_analysis_2022-04-09"
+output_dir: "/bulk/sycuro_bulk/lsycuro_labshare/kevin/proteomics_pangenomes/chlamydia_trachomatis/assembly_analysis_output"
 
 ## quast parameters.
 
@@ -34,12 +34,12 @@ metaerg_threads: 14
 checkm_database_path: "/bulk/IMCshared_bulk/shared/dbs/checkm_db"
 
 # Number of threads for checkm rule.
-checkm_threads: 14
+checkm_threads: 28
 
 ## GTDB-tk parameters.
 
 gtdbtk_database_path: "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-1.5.0/db"
 
 # Number of threads for gtdbtk rule.
-gtdbtk_threads: 14
+gtdbtk_threads: 28
 
