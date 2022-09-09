@@ -27,7 +27,7 @@ rule all:
         expand(config["output_dir"]+"/assembly_analysis/{sample}/extracted_sequences/cpn60_metadata.csv",sample=SAMPLES),
         expand(config["output_dir"]+"/assembly_analysis/{sample}/metaerg/data/all.gff",sample=SAMPLES),
         expand(config["output_dir"]+"/assembly_analysis/{sample}/checkm/checkm.tsv",sample=SAMPLES),
-        expand(config["output_dir"]+"/assembly_analysis/{sample}/gtdbtk/gtdbtk.bac120.summary.tsv",sample=SAMPLES)
+#        expand(config["output_dir"]+"/assembly_analysis/{sample}/gtdbtk/gtdbtk.bac120.summary.tsv",sample=SAMPLES)
 
 
 rule quast:
@@ -99,19 +99,19 @@ rule checkm:
        "cp {input.assembly_file} {params.checkm_dir}/$filename; "
        "checkm lineage_wf -t {params.threads} -x fa --tab_table --file {output.checkm_table_file} {params.checkm_dir} {params.checkm_dir}; "
 
-rule gtdbtk:
-    input:
-        assembly_file = os.path.join(config["input_dir"],"{sample}.fa")
-    output:
-        gtdbtk_file = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk","gtdbtk.bac120.summary.tsv")
-    params:
-       gtdbtk_data_path = config["gtdbtk_database_path"],
-       gtdbtk_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk"),
-       threads = config["gtdbtk_threads"]
-    conda: "utils/envs/gtdbtk_env.yaml"
-    shell:
-       "GTDBTK_DATA_PATH=\"{params.gtdbtk_data_path}\"; "       
-       "filename=$(basename {input.assembly_file}); "
-       "cp {input.assembly_file} {params.gtdbtk_dir}/$filename; "
-       "gtdbtk classify_wf --genome_dir {params.gtdbtk_dir} --extension \"fa\" --cpus {params.threads} --out_dir {params.gtdbtk_dir}; "
+#rule gtdbtk:
+#    input:
+#        assembly_file = os.path.join(config["input_dir"],"{sample}.fa")
+#    output:
+#        gtdbtk_file = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk","gtdbtk.bac120.summary.tsv")
+#    params:
+#       gtdbtk_data_path = config["gtdbtk_database_path"],
+#       gtdbtk_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk"),
+#       threads = config["gtdbtk_threads"]
+#    conda: "utils/envs/gtdbtk_env.yaml"
+#    shell:
+#       "GTDBTK_DATA_PATH=\"{params.gtdbtk_data_path}\"; "       
+#       "filename=$(basename {input.assembly_file}); "
+#       "cp {input.assembly_file} {params.gtdbtk_dir}/$filename; "
+#       "gtdbtk classify_wf --genome_dir {params.gtdbtk_dir} --extension \"fa\" --cpus {params.threads} --out_dir {params.gtdbtk_dir}; "
 
