@@ -1,6 +1,6 @@
-# ***************************************
-# * Parameters for metagenotate pipeline *
-# ***************************************
+# ****************************************************
+# * Parameters for genome_assembly_analysis pipeline *
+# ****************************************************
 
 list_files: "/bulk/sycuro_bulk/lsycuro_labshare/kevin/proteomics_pangenomes/chlamydia_trachomatis/software/genome_assembly_analysis/chlamydia_trachomatis_genome_list.txt"
 
@@ -38,7 +38,7 @@ checkm_threads: 28
 
 ## GTDB-tk parameters.
 
-gtdbtk_database_path: "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-1.5.0/db"
+gtdbtk_database_path: "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-2.2.0"
 
 # Number of threads for gtdbtk rule.
 gtdbtk_threads: 28

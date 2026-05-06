@@ -11,7 +11,7 @@ configfile: "config.yaml"
 import pandas as pd
 import os
 
-os.environ["GTDBTK_DATA_PATH"] = "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-1.5.0/db"
+os.environ["GTDBTK_DATA_PATH"] = "/bulk/IMCshared_bulk/shared/dbs/gtdbtk-2.2.0/db"
 
 SAMPLES = pd.read_csv(config["list_files"], header = None)
 SAMPLES = SAMPLES[0].tolist()
@@ -38,7 +38,7 @@ rule quast:
     params:
         quast_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","quast"),
         threads = config["quast_threads"]
-    conda: "utils/envs/quast_env.yaml"
+    conda: "quast_env"
     shell:
        "quast.py --output-dir {params.quast_dir} --threads {params.threads} {input.assembly_file}"
 
@@ -52,7 +52,7 @@ rule prokka:
         prokka_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","prokka"),
         threads = config["prokka_threads"],
 	prefix = "{sample}"
-    conda: "utils/envs/prokka_env.yaml"
+    conda: "prokka_env"
     shell:
        "prokka --metagenome --outdir {params.prokka_dir} --prefix {params.prefix} {input.assembly_file} --cpus {params.threads} --rfam 1 --force"
 
@@ -64,7 +64,7 @@ rule extract_marker_sequences:
         extracted_marker_seqs_csv_file = os.path.join(config["output_dir"],"assembly_analysis","{sample}","extracted_sequences","cpn60_metadata.csv"),    
     params:
         extracted_sequences_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","extracted_sequences"),
-    conda: "utils/envs/biopython_env.yaml"
+    conda: "biopython_env"
     shell:
         "python utils/scripts/extract_marker_sequences.py --fasta_infile {input.prokka_fna_file} --gff_infile {input.prokka_gff_file} --output_dir {params.extracted_sequences_dir}"
 
@@ -91,7 +91,7 @@ rule checkm:
         checkm_database = config["checkm_database_path"],
         checkm_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","checkm"),
 	threads = config["checkm_threads"]
-    conda: "utils/envs/checkm_env.yaml"
+    conda: "checkm_env"
     shell:
        "checkm data setRoot {params.checkm_database}; "
        "mkdir -p {params.checkm_dir}; "
@@ -101,17 +101,19 @@ rule checkm:
 
 rule gtdbtk:
     input:
-        assembly_file = os.path.join(config["input_dir"],"{sample}.fa")
+        genome_fasta_file = lambda wc: genome_to_fasta[wc.genome_name]
     output:
-        gtdbtk_file = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk","gtdbtk.bac120.summary.tsv")
+        gtdbtk_file = config["output_dir"]+"/{organism_name}/genome_analysis/{genome_name}/gtdbtk/gtdbtk.bac120.summary.tsv"
     params:
        gtdbtk_data_path = config["gtdbtk_database_path"],
-       gtdbtk_dir = os.path.join(config["output_dir"],"assembly_analysis","{sample}","gtdbtk"),
+       gtdbtk_dir = config["output_dir"]+"/{organism_name}/genome_analysis/{genome_name}/gtdbtk",
        threads = config["gtdbtk_threads"]
-    conda: "utils/envs/gtdbtk_env.yaml"
+    conda: "gtdbtk_env"
     shell:
-       "GTDBTK_DATA_PATH=\"{params.gtdbtk_data_path}\"; "       
-       "filename=$(basename {input.assembly_file}); "
-       "cp {input.assembly_file} {params.gtdbtk_dir}/$filename; "
-       "gtdbtk classify_wf --genome_dir {params.gtdbtk_dir} --extension \"fa\" --cpus {params.threads} --out_dir {params.gtdbtk_dir}; "
+       "GTDBTK_DATA_PATH='{params.gtdbtk_data_path}'; "
+       "filename=$(basename {input.genome_fasta_file} | sed 's/\.fa//g'); "
+       "cp {input.genome_fasta_file} {params.gtdbtk_dir}/${{filename}}_gtdbtk.fa; "
+       "gtdbtk classify_wf --skip_ani_screen --genome_dir {params.gtdbtk_dir} --extension 'fa' --cpus {params.threads} --out_dir {params.gtdbtk_dir}"
+
+
 
